@@ -26,6 +26,10 @@ type FormState = {
   style: string;
   assetsNote: string;
   formFieldsText: string;
+  needForm: boolean;
+  needBooking: boolean;
+  needMaintenance: boolean;
+  remarks: string;
 };
 
 export function RequirementForm({
@@ -51,7 +55,11 @@ export function RequirementForm({
     highlightsText: "同城 3 小时配送\n节日花束预定\n企业花礼定制",
     style: "清透、现代、带一点高级感",
     assetsNote: "已有门店照片 6 张，希望突出节日花束和微信咨询。",
-    formFieldsText: "姓名\n电话\n用途\n预算"
+    formFieldsText: "姓名\n电话\n用途\n预算",
+    needForm: true,
+    needBooking: true,
+    needMaintenance: true,
+    remarks: "希望页面能发给老客户，也能用于节日活动报名。"
   });
 
   const selectedPackage = packages.find((item) => item.slug === form.packageSlug) ?? packages[0];
@@ -69,7 +77,11 @@ export function RequirementForm({
           tagline: form.tagline,
           highlights,
           style: form.style,
-          assetsNote: form.assetsNote
+          assetsNote: form.assetsNote,
+          needForm: form.needForm,
+          needBooking: form.needBooking,
+          needMaintenance: form.needMaintenance,
+          remarks: form.remarks
         },
         selectedPackage?.name ?? "服务包",
         formFields
@@ -98,7 +110,11 @@ export function RequirementForm({
           tagline: form.tagline,
           highlights,
           style: form.style,
-          assetsNote: form.assetsNote
+          assetsNote: form.assetsNote,
+          needForm: form.needForm,
+          needBooking: form.needBooking,
+          needMaintenance: form.needMaintenance,
+          remarks: form.remarks
         },
         formFields
       })
@@ -117,11 +133,14 @@ export function RequirementForm({
       <section className="glass-panel rounded-2xl p-5">
         <div className="mb-6">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-cyan-600">
-            Requirement Intake
+            Delivery Intake
           </p>
           <h1 className="mt-2 text-3xl font-black tracking-tight text-slate-950">
-            四步生成平台 TaskSpec
+            提交资料，生成托管交付规格
           </h1>
+          <p className="mt-2 text-sm leading-6 text-slate-600">
+            请按模板提交资料，平台会生成交付规格，随后 Agent 生成初稿，Operator 做质检。
+          </p>
           <div className="mt-5 grid grid-cols-4 gap-2">
             {steps.map((item, index) => (
               <button
@@ -139,8 +158,8 @@ export function RequirementForm({
 
         {step === 0 ? (
           <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="店名" value={form.shopName} onChange={(value) => update("shopName", value)} />
-            <Field label="行业" value={form.industry} onChange={(value) => update("industry", value)} />
+            <Field label="店铺 / 品牌名称" value={form.shopName} onChange={(value) => update("shopName", value)} />
+            <Field label="行业类型" value={form.industry} onChange={(value) => update("industry", value)} />
             <Field label="电话" value={form.phone} onChange={(value) => update("phone", value)} />
             <Field
               label="营业时间"
@@ -157,9 +176,14 @@ export function RequirementForm({
           <div className="grid gap-4">
             <Field label="一句主打卖点" value={form.tagline} onChange={(value) => update("tagline", value)} />
             <TextAreaField
-              label="服务卖点，一行一个"
+              label="服务内容 / 服务项目，一行一个"
               value={form.highlightsText}
               onChange={(value) => update("highlightsText", value)}
+            />
+            <TextAreaField
+              label="门店介绍 / 品牌介绍"
+              value={form.remarks}
+              onChange={(value) => update("remarks", value)}
             />
             <TextAreaField
               label="表单字段，一行一个"
@@ -173,10 +197,27 @@ export function RequirementForm({
           <div className="grid gap-4">
             <Field label="风格偏好" value={form.style} onChange={(value) => update("style", value)} />
             <TextAreaField
-              label="素材说明"
+              label="图片素材说明"
               value={form.assetsNote}
               onChange={(value) => update("assetsNote", value)}
             />
+            <div className="grid gap-3 sm:grid-cols-3">
+              <ToggleField
+                label="需要表单收集"
+                checked={form.needForm}
+                onChange={(value) => update("needForm", value)}
+              />
+              <ToggleField
+                label="需要预约收集"
+                checked={form.needBooking}
+                onChange={(value) => update("needBooking", value)}
+              />
+              <ToggleField
+                label="需要后续维护"
+                checked={form.needMaintenance}
+                onChange={(value) => update("needMaintenance", value)}
+              />
+            </div>
           </div>
         ) : null}
 
@@ -204,8 +245,11 @@ export function RequirementForm({
             {error ? <p className="text-sm font-semibold text-red-600">{error}</p> : null}
             <Button size="lg" variant="primary" onClick={submit} disabled={loading}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ClipboardCheck className="h-4 w-4" />}
-              提交并生成订单
+              提交资料并生成交付规格
             </Button>
+            <p className="text-sm leading-6 text-slate-500">
+              提交后平台会根据你的资料生成交付规格；接下来 Agent 生成初稿，Operator 进行质检。
+            </p>
           </div>
         ) : null}
 
@@ -221,7 +265,7 @@ export function RequirementForm({
 
       <Card className="dark-console sticky top-24 h-fit border-white/10">
         <CardHeader>
-          <CardTitle className="text-white">TaskSpec 实时预览</CardTitle>
+          <CardTitle className="text-white">交付规格实时预览</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <SpecBlock label="目标" values={[taskSpec.goal]} />
@@ -231,6 +275,28 @@ export function RequirementForm({
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function ToggleField({
+  label,
+  checked,
+  onChange
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-white/80 px-3 py-3 text-sm font-semibold text-slate-700">
+      {label}
+      <input
+        type="checkbox"
+        className="h-4 w-4 accent-cyan-500"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+      />
+    </label>
   );
 }
 

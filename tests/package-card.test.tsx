@@ -5,6 +5,6 @@ import PackagesPage from "@/app/packages/page";
 describe("packages page", () => {
   it("renders package boundary language from database", async () => {
     render(await PackagesPage());
-    expect(screen.getByText("先锁定边界，再启动交付")).toBeInTheDocument();
+    expect(screen.getByText("服务包中心：购买可用结果，而不是购买工具")).toBeInTheDocument();
   });
 });

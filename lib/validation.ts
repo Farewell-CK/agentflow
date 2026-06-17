@@ -9,7 +9,11 @@ export const merchantProfileSchema = z.object({
   tagline: z.string().min(4, "请输入一句主打卖点"),
   highlights: z.array(z.string().min(1)).min(1),
   style: z.string().min(2, "请输入风格偏好"),
-  assetsNote: z.string().default("")
+  assetsNote: z.string().default(""),
+  needForm: z.boolean().default(false),
+  needBooking: z.boolean().default(false),
+  needMaintenance: z.boolean().default(false),
+  remarks: z.string().default("")
 });
 
 export const createOrderSchema = z.object({
@@ -23,7 +27,9 @@ export const updateSiteSchema = z.object({
   phone: z.string().min(7),
   address: z.string().min(5),
   businessHours: z.string().min(3),
-  heroCta: z.string().min(2).max(20)
+  heroCta: z.string().min(2).max(20),
+  services: z.array(z.string()).default([]),
+  images: z.array(z.string()).default([])
 });
 
 export const updateOperatorTaskSchema = z.object({

@@ -34,6 +34,10 @@ export type MerchantProfileInput = {
   highlights: string[];
   style: string;
   assetsNote: string;
+  needForm: boolean;
+  needBooking: boolean;
+  needMaintenance: boolean;
+  remarks: string;
 };
 
 export type TaskSpecView = {

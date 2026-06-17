@@ -17,7 +17,11 @@ describe("delivery agent", () => {
         tagline: "同城鲜花",
         highlights: ["3 小时配送"],
         style: "清透",
-        assetsNote: ""
+        assetsNote: "",
+        needForm: true,
+        needBooking: false,
+        needMaintenance: false,
+        remarks: "门店宣传"
       },
       taskSpec: {
         goal: "生成手机端宣传页",

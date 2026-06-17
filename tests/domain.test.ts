@@ -19,13 +19,17 @@ describe("domain helpers", () => {
         tagline: "同城鲜花",
         highlights: ["3 小时配送"],
         style: "清透",
-        assetsNote: ""
+        assetsNote: "",
+        needForm: true,
+        needBooking: true,
+        needMaintenance: false,
+        remarks: "门店宣传"
       },
       "基础托管版",
       ["姓名", "电话"]
     );
 
-    expect(spec.goal).toContain("青禾花艺");
+    expect(spec.goal).toContain("可托管、可编辑、可维护");
     expect(spec.constraints).toContain("套餐边界：基础托管版");
     expect(spec.formFields).toEqual(["姓名", "电话"]);
   });

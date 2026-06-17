@@ -8,7 +8,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "AgentFlow",
-  description: "AI 驱动的托管式数字交付网络"
+  description: "AI 驱动的托管式数字交付平台"
 };
 
 const navItems = [
@@ -39,7 +39,7 @@ export default async function RootLayout({
                   AgentFlow
                 </span>
                 <span className="hidden text-xs text-slate-500 sm:block">
-                  Managed AI Delivery Network
+                  Managed Digital Delivery Platform
                 </span>
               </span>
             </Link>

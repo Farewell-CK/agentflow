@@ -12,6 +12,7 @@ export default async function HostedPage({ params }: { params: Promise<{ slug: s
     address: string;
     businessHours: string;
     heroCta: string;
+    services?: string[];
   };
 
   return (
@@ -36,6 +37,12 @@ export default async function HostedPage({ params }: { params: Promise<{ slug: s
             <p className="mt-2 text-sm leading-6 text-slate-600">{section.body}</p>
           </div>
         ))}
+        {fields.services?.length ? (
+          <div className="rounded-lg border border-cyan-100 bg-cyan-50 p-4">
+            <h2 className="font-bold text-slate-950">服务项目</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{fields.services.join(" / ")}</p>
+          </div>
+        ) : null}
         <div className="rounded-lg bg-slate-950 p-5 text-sm leading-7 text-white">
           <p className="flex gap-2">
             <Phone className="mt-1 h-4 w-4 text-cyan-300" />

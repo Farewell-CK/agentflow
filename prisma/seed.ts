@@ -38,44 +38,38 @@ async function main() {
   const packages = await Promise.all([
     prisma.servicePackage.create({
       data: {
-        slug: "ai-trial",
-        name: "AI 自动体验版",
-        priceCny: 99,
-        billingLabel: "托管 7 天",
-        hostingDays: 7,
-        revisionCount: 0,
-        summary: "快速验证门店宣传页需求，适合低成本试用。",
-        includes: ["AI 自动生成", "手机端单页", "托管链接", "基础文案"],
-        excludes: ["人工精修", "复杂表单", "长期维护"],
-        highlight: false
-      }
-    }),
-    prisma.servicePackage.create({
-      data: {
-        slug: "managed-basic",
-        name: "基础托管版",
+        slug: "basic-showcase",
+        name: "基础展示页",
         priceCny: 299,
-        billingLabel: "托管 30 天",
+        billingLabel: "299 元起",
         hostingDays: 30,
         revisionCount: 1,
-        summary: "页面 + 文案 + 托管 + 1 次人工检查，适合门店宣传。",
-        includes: ["营销页", "门店文案", "托管发布", "1 次人工检查", "基础后台编辑"],
-        excludes: ["复杂预约系统", "多门店批量", "无限修改"],
-        highlight: true
+        summary: "手机端宣传页 + 平台托管 + 一次基础修改，适合门店基础展示。",
+        description: "把门店介绍、服务项目和联系方式整理成可转发的托管页面。",
+        maintenanceIncluded: false,
+        deliveryTime: "1-2 个工作日",
+        targetUsers: ["小微商家", "个体户", "摄影工作室", "本地服务商家"],
+        includes: ["手机端宣传页", "门店介绍", "服务项目", "联系方式", "平台托管", "一次基础修改"],
+        excludes: ["复杂表单", "在线支付", "会员系统", "长期维护"],
+        highlight: false
       }
     }),
     prisma.servicePackage.create({
       data: {
-        slug: "growth-standard",
-        name: "标准增长版",
+        slug: "lead-standard",
+        name: "标准获客页",
         priceCny: 599,
-        billingLabel: "托管 90 天",
+        billingLabel: "599 元起",
         hostingDays: 90,
         revisionCount: 2,
-        summary: "加入表单和素材整理，适合活动获客。",
-        includes: ["营销页", "线索表单", "素材整理", "托管发布", "2 次修改"],
-        excludes: ["支付交易", "会员系统", "复杂 CRM"],
-        highlight: false
+        summary: "宣传页 + 表单收集 + 素材整理 + Operator 质检，适合活动和获客。",
+        description: "在基础展示页之上加入表单收集、移动端转化路径和发布前质检。",
+        maintenanceIncluded: false,
+        deliveryTime: "2-3 个工作日",
+        targetUsers: ["培训机构", "民宿", "健身教练", "活动运营者"],
+        includes: ["宣传页", "表单收集", "移动端适配", "素材整理", "Operator 质检", "两次基础修改"],
+        excludes: ["复杂预约排班", "支付交易", "CRM 集成", "无限修改"],
+        highlight: true
       }
     }),
     prisma.servicePackage.create({
@@ -83,12 +77,16 @@ async function main() {
         slug: "annual-care",
         name: "年度维护版",
         priceCny: 999,
-        billingLabel: "按年",
+        billingLabel: "999 元 / 年起",
         hostingDays: 365,
         revisionCount: 12,
-        summary: "页面托管 + 每月小改 + 基础客服，适合长期使用。",
-        includes: ["长期托管", "每月小改", "基础客服", "质量巡检"],
-        excludes: ["重新设计整站", "业务系统开发", "广告投放代运营"],
+        summary: "页面托管 + 每月小修改 + 表单数据导出，适合持续经营。",
+        description: "为已经上线的数字成果提供维护期服务和基础故障处理。",
+        maintenanceIncluded: true,
+        deliveryTime: "按月维护",
+        targetUsers: ["长期经营门店", "连锁小店", "培训机构", "服务型商家"],
+        includes: ["页面托管", "每月小修改", "基础故障处理", "表单数据导出", "服务内容更新"],
+        excludes: ["重新设计整站", "业务系统开发", "广告投放代运营", "无限人工修改"],
         highlight: false
       }
     })
@@ -104,29 +102,35 @@ async function main() {
       tagline: "用一束花，把今天变得更有仪式感",
       highlights: ["同城 3 小时配送", "节日花束预定", "企业花礼定制"],
       style: "清透、现代、带一点高级感",
-      assetsNote: "已有门店照片 6 张，希望突出节日花束和微信咨询。"
+      assetsNote: "已有门店照片 6 张，希望突出节日花束和微信咨询。",
+      needForm: true,
+      needBooking: true,
+      needMaintenance: true,
+      remarks: "希望页面能发给老客户，也能用于节日活动报名。"
     }
   });
 
   const order = await prisma.order.create({
     data: {
       code: "AF-2406-001",
-      status: OrderStatus.OPERATOR_REVIEW,
-      currentStep: 3,
+      status: OrderStatus.PUBLISHED,
+      currentStep: 4,
       merchantUserId: merchantUser.id,
       servicePackageId: packages[1].id,
-      merchantProfileId: merchantProfile.id
+      merchantProfileId: merchantProfile.id,
+      previewUrl: "/preview/qinghe-floral",
+      maintenanceExpireAt: new Date("2027-06-30T00:00:00.000Z")
     }
   });
 
   await prisma.taskSpec.create({
     data: {
       orderId: order.id,
-      goal: "为青禾花艺生成一个手机端宣传页，引导用户电话或微信咨询。",
+      goal: "为青禾花艺交付一个可托管、可编辑、可维护的手机端获客页，引导用户电话、微信咨询或提交预约表单。",
       pageType: "mobile-landing-page",
-      sections: ["Hero", "服务卖点", "热销花束", "门店位置", "咨询表单"],
+      sections: ["首屏介绍", "服务项目", "热销花束", "门店位置", "预约收集表单"],
       formFields: ["姓名", "电话", "用途", "预算"],
-      constraints: ["移动端优先", "必须保留电话 CTA", "不接真实支付", "1 次人工检查"]
+      constraints: ["移动端优先", "必须保留电话 CTA", "不接真实支付", "预约收集仅做表单", "2 次基础修改"]
     }
   });
 
@@ -146,8 +150,19 @@ async function main() {
         phone: merchantProfile.phone,
         address: merchantProfile.address,
         businessHours: merchantProfile.businessHours,
-        heroCta: "电话咨询"
+        heroCta: "电话咨询",
+        services: ["节日花束", "企业花礼", "同城配送"],
+        images: ["门店照片", "花束照片", "活动海报"]
       },
+      formSubmissions: [
+        { name: "王女士", phone: "138****1024", usage: "生日花束", budget: "300-500" },
+        { name: "林先生", phone: "139****8801", usage: "企业花礼", budget: "1000+" }
+      ],
+      qualityCheckStatus: "passed",
+      operatorReviewStatus: "approved",
+      revisionUsed: 1,
+      revisionLimit: 2,
+      maintenanceExpireAt: new Date("2027-06-30T00:00:00.000Z"),
       published: true,
       lastPublishedAt: new Date()
     }
@@ -158,17 +173,29 @@ async function main() {
       orderId: order.id,
       operatorUserId: operatorUser.id,
       status: OperatorTaskStatus.IN_PROGRESS,
+      type: "QUALITY_REVIEW",
       priority: "high",
+      agentOutput: {
+        headline: "青禾花艺工作室",
+        sections: ["首屏介绍", "服务项目", "预约表单"],
+        editableFields: ["phone", "address", "businessHours", "services", "images"]
+      },
+      autoCheckResult: {
+        status: "warning",
+        passed: 5,
+        warnings: 1
+      },
+      issues: ["图片素材仍为占位，需要 Operator 发布前确认。"],
       plan: [
         { title: "核对 TaskSpec", detail: "确认行业、套餐边界、联系方式和 CTA 完整。" },
-        { title: "移动端检查", detail: "检查首屏信息密度、按钮尺寸、表单字段可用性。" },
-        { title: "托管发布前质检", detail: "确认链接、电话、地址和营业时间无误。" }
+        { title: "检查 Agent 初稿", detail: "检查首屏信息密度、按钮尺寸、表单字段和可编辑字段。" },
+        { title: "托管发布前质检", detail: "确认链接、电话、地址、营业时间、维护期和修改次数无误。" }
       ],
       logs: [
-        "[10:12:03] claim AF-2406-001",
-        "[10:13:44] generated mobile landing page draft",
-        "[10:18:22] qa warning: phone CTA contrast below target",
-        "[10:21:09] patch applied: CTA contrast and spacing"
+        "[10:12:03] pull structured task AF-2406-001",
+        "[10:13:44] inspect Agent-generated managed page draft",
+        "[10:18:22] auto check warning: image material placeholder",
+        "[10:21:09] operator note added: verify merchant images before final publish"
       ]
     }
   });
@@ -177,9 +204,9 @@ async function main() {
     data: [
       {
         operatorTaskId: task.id,
-        label: "信息完整性",
+        label: "结构化需求完整性",
         status: QualityStatus.PASS,
-        note: "店名、电话、地址、营业时间已齐全。"
+        note: "行业、店名、服务内容、电话、地址、营业时间已齐全。"
       },
       {
         operatorTaskId: task.id,
@@ -191,13 +218,13 @@ async function main() {
         operatorTaskId: task.id,
         label: "套餐边界",
         status: QualityStatus.PASS,
-        note: "没有承诺支付、会员、复杂预约等超范围能力。"
+        note: "没有承诺支付、会员、复杂预约排班或无限修改。"
       },
       {
         operatorTaskId: task.id,
-        label: "视觉可读性",
+        label: "托管可维护性",
         status: QualityStatus.WARN,
-        note: "花束图片区域需要后续接真实素材。"
+        note: "图片素材区域仍为占位，发布前需要 Operator 确认。"
       }
     ]
   });

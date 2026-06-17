@@ -9,8 +9,8 @@ export default function CliPage() {
     <PageShell className="console-grid">
       <SectionHeading
         eyebrow="CLI / Skill Demo"
-        title="Operator 可以用命令行接入 AgentFlow 工作流"
-        description="MVP 先演示完整流程，不接真实外部 Agent。后续可把这条链路产品化为 Operator CLI。"
+        title="AgentFlow CLI / Skill 是 AI Operator 的后台生产工具"
+        description="它帮助 AI Operator 拉取结构化任务、生成执行计划、调用本地 Agent、检查结果并提交交付物，是后台交付网络的一部分。"
       />
 
       <Card className="dark-console mt-8 border-white/10">

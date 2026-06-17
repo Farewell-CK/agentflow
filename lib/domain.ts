@@ -15,15 +15,17 @@ export function buildTaskSpec(
   formFields: string[]
 ): TaskSpecView {
   return {
-    goal: `为${merchantProfile.shopName}生成一个手机端宣传页，突出「${merchantProfile.tagline}」，引导用户电话咨询或提交表单。`,
+    goal: `为${merchantProfile.shopName}交付一个可托管、可编辑、可维护的手机端数字成果，突出「${merchantProfile.tagline}」，引导用户咨询、预约或提交表单。`,
     pageType: "mobile-landing-page",
-    sections: ["首屏转化", "服务卖点", "门店信息", "信任背书", "咨询表单"],
+    sections: ["首屏介绍", "服务项目", "门店介绍", "联系方式", merchantProfile.needForm ? "线索表单" : "咨询入口"],
     formFields,
     constraints: [
       "移动端优先",
       "不接真实支付",
       `套餐边界：${packageName}`,
-      "复杂修改进入 Operator 兜底"
+      merchantProfile.needBooking ? "预约收集仅做表单，不做复杂排班系统" : "不包含预约系统",
+      merchantProfile.needMaintenance ? "需要后续维护说明" : "未购买长期维护时只包含套餐内修改",
+      "复杂修改进入 Operator 质检和兜底"
     ]
   };
 }
