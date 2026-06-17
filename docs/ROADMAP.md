@@ -8,7 +8,7 @@ Target version: `v0.1.0`
 
 Scope:
 
-- Keep canonical product specs and prototype screenshots in Git.
+- Keep canonical Markdown product specs and prototype screenshots in Git.
 - Ignore local archives, dependencies, build output, secrets, logs, and test artifacts.
 - Define branch, commit, version, release, and testing rules.
 
@@ -17,7 +17,7 @@ Exit criteria:
 - `README.md` explains the product direction and repository layout.
 - `.gitignore`, `.gitattributes`, and `.editorconfig` exist.
 - Repository guide, testing strategy, and changelog exist.
-- Redundant zip bundles are no longer tracked by Git.
+- Redundant zip, PDF, and DOCX handoff files are no longer tracked by Git.
 
 ## Phase 1: App Scaffold
 

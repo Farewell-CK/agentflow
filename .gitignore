@@ -53,6 +53,10 @@ Thumbs.db
 *.rar
 *.7z
 
+# Binary handoff documents should be attached to releases, not kept as source
+*.docx
+*.pdf
+
 # Temporary files
 tmp/
 temp/

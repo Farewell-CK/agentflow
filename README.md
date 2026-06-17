@@ -4,7 +4,7 @@ AgentFlow is an AI-driven managed digital delivery network. The MVP focuses on m
 
 ## Current Repository State
 
-This repository currently contains the product delivery package, product specs, implementation instructions, and optimized prototype images. The application code has not been generated yet.
+This repository currently contains normalized product specs, implementation instructions, and optimized prototype images. The application code has not been generated yet.
 
 ## Product Direction
 
@@ -38,9 +38,9 @@ packages/domain/           # Shared types and mock domain data, if needed
 
 ## Source Materials
 
-- Product options: `docs/AgentFlow_两套方案.pdf`
-- PRD and prototype notes: `docs/AgentFlow_PRD_原型说明.pdf`
-- Implementation instruction: `docs/AgentFlow_Codex_Claude_Code_实现指令.md`
+- Product options: `docs/product-options.md`
+- PRD and prototype notes: `docs/prd.md`
+- Implementation instruction: `docs/implementation-instructions.md`
 - Prototype screenshots: `prototype_images/`
 
 ## Next Milestones

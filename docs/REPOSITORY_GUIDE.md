@@ -7,7 +7,7 @@ This document defines how the AgentFlow repository should be maintained as a lon
 Track files that are source material, source code, configuration, or lightweight product documentation:
 
 - Application source code.
-- Product specs and implementation notes under `docs/`.
+- Product specs and implementation notes under `docs/`, preferably as Markdown.
 - Prototype images under `prototype_images/` when they are referenced by design or implementation work.
 - Configuration files such as `.gitignore`, `.editorconfig`, `.gitattributes`, `package.json`, lockfiles, TypeScript config, lint config, and test config.
 - Test files, fixtures, and small mock data needed to run the app.
@@ -21,8 +21,9 @@ Do not commit files that are generated, local, secret, or redundant:
 - Coverage and test artifacts such as `coverage/`, `test-results/`, `playwright-report/`.
 - Logs and temporary files.
 - Delivery archive bundles such as `.zip`, `.tar.gz`, `.rar`, `.7z`.
+- Binary handoff documents such as `.docx` and `.pdf` unless they are the only canonical source.
 
-Large product source files can be kept only when they are the canonical reference. Redundant archives should stay local or move to a release artifact, not source control.
+Large product source files can be kept only when they are the canonical reference. Redundant archives and binary handoff documents should stay local or move to a release artifact, not source control.
 
 ## Branch Model
 
@@ -92,6 +93,5 @@ For each release:
 ## Documentation Rules
 
 - Product decisions that affect implementation should be written in Markdown.
-- Keep original PDF/DOCX assets when they are canonical references.
 - Prefer Markdown for living docs because it diffs cleanly.
 - Move one-off binary handoff packages to GitHub Releases or external storage.
