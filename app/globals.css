@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 208 100% 98%;
+  --foreground: 214 66% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 214 66% 9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 214 66% 9%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 194 88% 94%;
+  --secondary-foreground: 214 66% 16%;
+  --muted: 210 40% 94%;
+  --muted-foreground: 215 20% 38%;
+  --accent: 187 92% 43%;
+  --accent-foreground: 214 66% 9%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 88%;
+  --input: 214 32% 88%;
+  --ring: 187 92% 43%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(34, 211, 238, 0.18), transparent 28rem),
+    radial-gradient(circle at 85% 2%, rgba(37, 99, 235, 0.2), transparent 24rem),
+    linear-gradient(180deg, #f7fbff 0%, #edf7ff 42%, #f7fbff 100%);
+  color: hsl(var(--foreground));
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.35);
+}
+
+.console-grid {
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: 0 20px 70px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(18px);
+}
+
+.dark-console {
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.2), transparent 24rem),
+    radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.28), transparent 20rem),
+    #07111f;
+  color: #e5f6ff;
+}

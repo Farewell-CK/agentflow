@@ -9,6 +9,7 @@ out/
 dist/
 build/
 storybook-static/
+tsconfig.tsbuildinfo
 
 # Test and coverage output
 coverage/
@@ -29,6 +30,10 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+
+# Local databases
+*.db
+*.db-journal
 
 # Local editor and OS files
 .DS_Store

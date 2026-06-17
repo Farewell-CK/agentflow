@@ -4,7 +4,7 @@ AgentFlow is an AI-driven managed digital delivery network. The MVP focuses on m
 
 ## Current Repository State
 
-This repository currently contains normalized product specs, implementation instructions, and optimized prototype images. The application code has not been generated yet.
+This repository contains the AgentFlow MVP application, normalized product specs, implementation instructions, and optimized prototype images.
 
 ## Product Direction
 
@@ -43,13 +43,29 @@ packages/domain/           # Shared types and mock domain data, if needed
 - Implementation instruction: `docs/implementation-instructions.md`
 - Prototype screenshots: `prototype_images/`
 
+## Local Development
+
+```bash
+npm install
+cp .env.example .env
+npm run db:generate
+npm run db:push
+npm run db:seed
+npm run dev
+```
+
+Demo accounts:
+
+- `merchant@agentflow.dev` / `agentflow123`
+- `operator@agentflow.dev` / `agentflow123`
+- `admin@agentflow.dev` / `agentflow123`
+
 ## Next Milestones
 
-1. Create the Next.js 14 + TypeScript + Tailwind application.
-2. Implement mock domain models and seed data.
-3. Build the user flow: home, package selection, requirement form, order progress, preview, and editable admin.
-4. Build the Operator workbench and CLI/Skill demo screens.
-5. Add lint, typecheck, unit tests, and smoke tests before the first release.
+1. Install and enable the remaining Codex skills after restarting Codex.
+2. Replace the generated placeholder visual direction with final approved hero assets.
+3. Migrate SQLite to PostgreSQL before production deployment.
+4. Expand Playwright coverage for the full order and Operator flows.
 
 ## Repository Governance
 

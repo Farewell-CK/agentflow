@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  MERCHANT
+  OPERATOR
+  ADMIN
+}
+
+enum OrderStatus {
+  REQUIREMENT_SUBMITTED
+  AGENT_GENERATING
+  AUTO_QA
+  OPERATOR_REVIEW
+  PUBLISHED
+  CONFIRMED
+}
+
+enum OperatorTaskStatus {
+  QUEUED
+  CLAIMED
+  IN_PROGRESS
+  SUBMITTED
+  RETURNED
+}
+
+enum QualityStatus {
+  PASS
+  WARN
+  FAIL
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  role          UserRole
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]   @relation("MerchantOrders")
+  tasks         OperatorTask[] @relation("OperatorTasks")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model ServicePackage {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  priceCny      Int
+  billingLabel  String
+  hostingDays   Int
+  revisionCount Int
+  summary       String
+  includes      Json
+  excludes      Json
+  highlight     Boolean  @default(false)
+  orders        Order[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model MerchantProfile {
+  id            String       @id @default(cuid())
+  shopName      String
+  industry      String
+  address       String
+  phone         String
+  businessHours String
+  tagline       String
+  highlights    Json
+  style         String
+  assetsNote    String
+  orders        Order[]
+  hostedSites   HostedSite[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Order {
+  id                String          @id @default(cuid())
+  code              String          @unique
+  status            OrderStatus     @default(REQUIREMENT_SUBMITTED)
+  currentStep       Int             @default(0)
+  merchantUserId    String
+  merchantUser      User            @relation("MerchantOrders", fields: [merchantUserId], references: [id])
+  servicePackageId  String
+  servicePackage    ServicePackage  @relation(fields: [servicePackageId], references: [id])
+  merchantProfileId String
+  merchantProfile   MerchantProfile @relation(fields: [merchantProfileId], references: [id])
+  taskSpec          TaskSpec?
+  operatorTask      OperatorTask?
+  hostedSite        HostedSite?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model TaskSpec {
+  id          String   @id @default(cuid())
+  orderId     String   @unique
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  goal        String
+  pageType    String
+  sections    Json
+  formFields  Json
+  constraints Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model OperatorTask {
+  id             String             @id @default(cuid())
+  orderId        String             @unique
+  order          Order              @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  operatorUserId String?
+  operatorUser   User?              @relation("OperatorTasks", fields: [operatorUserId], references: [id])
+  status         OperatorTaskStatus @default(QUEUED)
+  priority       String             @default("normal")
+  plan           Json
+  checklist      QualityCheck[]
+  logs           Json
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+}
+
+model HostedSite {
+  id                String          @id @default(cuid())
+  slug              String          @unique
+  orderId           String          @unique
+  order             Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  merchantProfileId String
+  merchantProfile   MerchantProfile @relation(fields: [merchantProfileId], references: [id])
+  headline          String
+  subheadline       String
+  sections          Json
+  editableFields    Json
+  published         Boolean         @default(false)
+  lastPublishedAt   DateTime?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}
+
+model QualityCheck {
+  id             String        @id @default(cuid())
+  operatorTaskId String
+  operatorTask   OperatorTask  @relation(fields: [operatorTaskId], references: [id], onDelete: Cascade)
+  label          String
+  status         QualityStatus @default(WARN)
+  note           String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
