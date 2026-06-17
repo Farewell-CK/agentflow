@@ -9,8 +9,21 @@ Research date: 2026-06-17
 - Official OpenAI curated skills: `https://github.com/openai/skills/tree/main/skills/.curated`
 - Official OpenAI system skills: `https://github.com/openai/skills/tree/main/skills/.system`
 - Local installed Lark skills under `/home/duchaoke/.agents/skills`
+- Additional GitHub skill sources for non-curated UI/design skills
 
-The official experimental skills path was checked but was not available at the time of research.
+The official experimental skills path was checked but was not available through the skill installer at the time of research. A targeted follow-up search found `frontend-design` in non-curated sources.
+
+## Important Follow-Up Finding
+
+`frontend-design` is highly relevant to AgentFlow. It focuses on distinctive, production-grade frontend interface design and implementation: intentional visual direction, typography, palettes, motion, responsive UI, accessibility, and avoiding generic AI-looking interfaces.
+
+It was not included in the first pass because it was not listed in the official curated skill index. It was found in follow-up searches under non-curated/third-party sources:
+
+- `anthropics/skills`: `skills/frontend-design`
+- `214140846/skills`: `skills/.experimental/frontend-design`
+- `vipulgupta2048/codex-skills`: `skills/frontend-design`
+
+For AgentFlow, this should be treated as a first-wave UI skill.
 
 ## Already Available In This Environment
 
@@ -36,6 +49,7 @@ Install these first because they directly support the MVP workflow.
 
 | Area | Skill | Why it matters for AgentFlow |
 | --- | --- | --- |
+| Frontend design | `frontend-design` | Gives the MVP a deliberate, high-craft visual direction instead of a generic SaaS template. |
 | UI/UX implementation | `playwright` | Browser automation, screenshots, form flows, responsive smoke tests. |
 | UI/UX debugging | `playwright-interactive` | Faster iterative visual debugging of the local app. |
 | Design handoff | `figma` | Read Figma context, screenshots, variables, and assets if we move prototypes to Figma. |
@@ -99,6 +113,14 @@ python /home/duchaoke/.codex/skills/.system/skill-installer/scripts/install-skil
   --path skills/.curated/security-best-practices \
   --path skills/.curated/security-threat-model \
   --path skills/.curated/jupyter-notebook
+```
+
+Install `frontend-design` from one of the non-curated sources:
+
+```bash
+python /home/duchaoke/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo anthropics/skills \
+  --path skills/frontend-design
 ```
 
 Restart Codex after installing new skills so they are available in future turns.
